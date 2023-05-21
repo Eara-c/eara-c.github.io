@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+</head>
+<body>
+    <h1>Results</h1>
+
+	<div id="result">
+
+		<script>
+			var hiddenText = `hameau ; 100 ; 350 ; 500
+			village ; 1000 ; 6000 ; 10000
+			ville ; 10000 ; 60000 ; 100000
+			metropole ; 100000 ; 600000 ; 1000000
+			megacite ; 1000000 ; 6000000 ; 10000000
+			cosmopole ; 10000000 ; 35000000 ; 50000000
+			hypercite ; 50000000 ; 100000000 ; 100000000
+			citadelle ; 100000000 ; 350000000 ; 500000000
+			metropole-stellaire ; 500000000 ; 1000000000 ; 1000000000
+			megalopole ; 1000000000 ; 3500000000 ; 5000000000`;
+
+			
+			
+			function getValue(cityType, density) {
+			
+			var value;
+				var lines = hiddenText.trim().split('\n');
+				for (var i = 0; i < lines.length; i++) {
+					var parts = lines[i].split(';').map(part => part.trim());
+					if (parts[0] === cityType && parts.length === 4) {
+						
+						if (density === "low") {
+							value = parts[1];
+						} else if (density === "normal") {
+							value = parts[2];
+						} else if (density === "high") {
+							value = parts[3];
+						}
+
+						document.getElementById("result").textContent = "Nombre d'habitants : " + value;
+						break;
+					}
+				}
+			}
+
+			
+			var urlParams = new URLSearchParams(window.location.search);
+			var cityType = urlParams.get('cityType');
+			var density = urlParams.get('density');
+			
+			getValue(cityType, density);
+			
+		</script>
+
+	</div>
+
+    <a href="citygen.html">Back</a>
+         
+</body>
+</html>

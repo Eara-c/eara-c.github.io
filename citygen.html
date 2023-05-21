@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>City gen</title>
+</head>
+<body>
+	<h1>Selection Button</h1>
+    
+    <form action="results.html" method="get">
+        <label for="cityType">City Type:</label>
+        <select id="cityType" name="cityType">
+            <option value="hameau">Hameau</option>
+            <option value="village">Village</option>
+            <option value="ville">Ville</option>
+            <option value="metropole">Métropole</option>
+            <option value="megacite">Mégacité</option>
+            <option value="cosmopole">Cosmopole</option>
+            <option value="hypercite">Hypercité</option>
+            <option value="citadelle">Citadelle</option>
+            <option value="metropole-stellaire">Métropole stellaire</option>
+            <option value="megalopole">Mégalopole</option>
+        </select>
+        
+        <br><br>
+        
+        <label for="density">Density:</label>
+        <select id="density" name="density">
+            <option value="low">Densité faible</option>
+            <option value="normal">Densité normale</option>
+            <option value="high">Densité élevée</option>
+        </select>
+        
+        <br><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+	
+	<script>
+    // Get a reference to the form element
+    var form = document.querySelector('form');
+
+    // Add event listener for form submission
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting
+
+        // Get the selected values from the form
+        var cityType = document.getElementById('cityType').value;
+        var density = document.getElementById('density').value;
+
+        // Create the query string to pass the values to the results page
+        var queryString = '?cityType=' + encodeURIComponent(cityType) + '&density=' + encodeURIComponent(density);
+
+        // Redirect to the results page with the query string
+        window.location.href = 'results.html' + queryString;
+    });
+	</script>
+
+	<a href="index.html">Retour index</a>
+</body>
+</html>
