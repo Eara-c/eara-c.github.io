@@ -8,22 +8,30 @@
  
 <body>
 
-J'essaye un truc là
-<p id="fileContent"></p>
-	<script>
-		//document.getElementById("demo").innerHTML = "ici";
+<!-- function getRandomInt(max) {
+		  return Math.floor(Math.random() * max);
+		} -->
+       
+	<p id="random-element"></p>
+
+    <!-- Include the script -->
+    <script>
 		function getRandomInt(max) {
 		  return Math.floor(Math.random() * max);
 		}
-        // Fetch the contents of list.txt and display it in the <pre> element
-        fetch('listes.txt')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('fileContent').textContent = data;
-            })
-            .catch(error => {
-                console.error('Error fetching the file:', error);
-            });
+	
+	// Define a list of elements
+	const elements = ["Element 1", "Element 2", "Element 3", "Element 4", "Element 5"];
+
+	// Function to display a random element from the list
+	function displayRandomElement() {
+		// Get a random index
+		const randomIndex = getRandomInt(1);
+		// Get the random element
+		const randomElement = elements[randomIndex];
+		// Display the random element in the paragraph with id "random-element"
+		document.getElementById("random-element").innerText = randomElement;
+	}
 	</script>
 
 </body>
