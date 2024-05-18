@@ -1,12 +1,13 @@
 p {
 	text-align:left;
-	font-size:90px;
+	font-size:80px;
 	margin-top:0px;
 	margin-bottom:0px;
+	color:black;
 }
 
 button {
 	height:400px;
 	width:900px;
-	font-size:150px
+	font-size:80px
 }
