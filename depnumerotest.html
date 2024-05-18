@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+	<meta charset="UTF-8">
+	      
+</head>
+ 
+<body>
+
+J'essaye un truc là
+<p id="demo"></p>
+
+<script>
+	//document.getElementById("demo").innerHTML = "ici";
+	function getRandomInt(max) {
+	  return Math.floor(Math.random() * max);
+	}
+	// Fetch the contents of list.txt and display it in the <pre> element
+	let file = "listes.txt"
+	fetch (file)
+	.then(x => x.text())
+	.then(y => document.getElementById("demo").innerHTML = y);
+</script>
+
+Et ça c'est après
+</body>
+ 
+</html>
