@@ -3,13 +3,13 @@
  
 <head>
 	<meta charset="UTF-8">
-	      
+	<link rel="stylesheet" href="mystyle.css">
 </head>
  
 <body>
 
-    <script>
-	
+	<script>
+		
 	function getRandomInt(max) {
 	  return Math.floor(Math.random() * max);
 	}
@@ -31,19 +31,20 @@
 	
 	</script>
 	
-	Numéro du département : 
-	<p id="num"></p>
+	<p>Numéro du département : </p>
+	<p id="num" style="font-size:150px;text-align:center"></p>
 	<script>
 		document.getElementById("num").innerText = randomIndex ;
 	</script>
 	
 	<p id="dep"></p>
-	<button style="height:500px;width:1000px;font-size:100px" onclick="displayRandomElement('dep')">Voir la réponse</button>
+	<button onclick="displayRandomElement('dep')">Voir la réponse</button>
 
-	<p/>
+	<p>
 	<a href="num_to_dep.html">
-   		<button style="height:100px;width:200px">Un autre</button>
+		<button>Un autre</button>
 	</a>
+	
 
 </body>
  
