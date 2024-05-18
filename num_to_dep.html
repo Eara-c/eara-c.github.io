@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+	<meta charset="UTF-8">
+	      
+</head>
+ 
+<body>
+
+    <script>
+	
+	function getRandomInt(max) {
+	  return Math.floor(Math.random() * max);
+	}
+			
+	const randomIndex = getRandomInt(3)+1;
+	
+	// Function to display a random element from the list
+	function displayRandomElement(where) {
+		
+		const randomElement = map1.get(randomIndex);
+		document.getElementById(where).innerText = randomElement;
+	}	
+	
+	// Define a list of elements
+	const map1 = new Map();
+		map1.set(1, "testa");
+		map1.set(2, "testb");
+		map1.set(3, "testc");
+	
+	</script>
+	
+	Numéro du département : 
+	<p id="num"></p>
+	<script>
+		document.getElementById("num").innerText = randomIndex ;
+	</script>
+	
+	<p id="dep"></p>
+	<button style="height:100px;width:200px" onclick="displayRandomElement('dep')">Voir la réponse</button>
+
+	<p/>
+	<a href="num_to_dep.html">
+   		<button style="height:100px;width:200px">Un autre !</button>
+	</a>
+
+</body>
+ 
+</html>
