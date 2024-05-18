@@ -21,20 +21,23 @@
 		}
 	
 	// Define a list of elements
-	const elements = ["dep1&1", "dep2&2", "Element 3", "Element 4", "Element 5"];
+	const map1 = new Map();
+		map1.set('a', "testa");
+		map1.set('b', "testb");
+		map1.set('c', 3);
 
 	// Function to display a random element from the list
 	function displayRandomElement() {
 		// Get a random index
 		const randomIndex = getRandomInt(2);
 		// Get the random element
-		const randomElement = elements[randomIndex];
+		const randomElement = map1[randomIndex];
 		// Display the random element in the paragraph with id "random-element"
-		const test = "test";
 		document.getElementById("random-element").innerText = test;
+		return randomElement;
 	}
-	displayRandomElement();
 	</script>
+	<button onclick="displayRandomElement()">ici le bouton</button>
 
 </body>
  
