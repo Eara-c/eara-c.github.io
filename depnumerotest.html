@@ -21,17 +21,19 @@
 		}
 	
 	// Define a list of elements
-	const elements = ["Element 1", "Element 2", "Element 3", "Element 4", "Element 5"];
+	const elements = ["dep1&1", "dep2&2", "Element 3", "Element 4", "Element 5"];
 
 	// Function to display a random element from the list
 	function displayRandomElement() {
 		// Get a random index
-		const randomIndex = 2 ;//getRandomInt(2);
+		const randomIndex = getRandomInt(2);
 		// Get the random element
 		const randomElement = elements[randomIndex];
 		// Display the random element in the paragraph with id "random-element"
-		document.getElementById("random-element").innerText = randomElement;
+		const test = "test";
+		document.getElementById("random-element").innerText = test;
 	}
+	displayRandomElement();
 	</script>
 
 </body>
