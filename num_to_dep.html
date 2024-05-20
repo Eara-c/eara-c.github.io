@@ -9,12 +9,19 @@
 <body>
 
 	<script>
+	
+	let queryString = window.location.search;
+	let urlParams = new URLSearchParams(queryString);
+	let depmax = urlParams.get('depmax')
+	
+	let newURL = "num_to_dep.html?depmax="
+	newURL =newURL.concat("",depmax);
 		
 	function getRandomInt(max) {
 	  return Math.floor(Math.random() * max);
 	}
 	function indexdepRandom() {
-		var indexrand = getRandomInt(100)+1;
+		var indexrand = getRandomInt(depmax)+1;
 		if (indexrand==96){
 			indexrand=971;
 		} else if (indexrand==97){
@@ -40,7 +47,7 @@
 	}	
 	
 	</script>
-	
+		
 	<p style="text-decoration: underline">Numéro du département : </p>
 	<p id="num" style="font-size:80px"></p>
 	<script>
@@ -48,13 +55,13 @@
 	</script>
 	
 	<p id="dep" style="text-align:center">
-	<button onclick="displayRandomElement('dep')">Voir la réponse</button>
+		<button onclick="displayRandomElement('dep')">Voir la réponse</button>
 	</p>
 
 	<p style="margin-top:20px"/>
-	<a href="num_to_dep.html">
-		<button>Un autre</button>
-	</a>
+		<a href="num_to_dep.html" onclick="location.href=this.href+'?depmax='+depmax;return false;">
+			<button>Un autre</button>
+		</a>
 	
 	<p style="margin-top:20px"/>
 	<a href="index.html">
