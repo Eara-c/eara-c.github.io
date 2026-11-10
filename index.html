@@ -14,58 +14,59 @@
 <body>
 
 
-    <h1>Ma liste</h1>
+    <body>
 
-    <div id="liste-boutons"></div>
+    <h1>Ma liste</h1>
+    <div id="liste-boutons">Chargement...</div>
 
     <script>
         async function chargerExcel() {
+            try {
+                const response = await fetch("bdd.xlsx");
 
-            // Récupération du fichier Excel
-            const response = await fetch("bdd.xlsx");
-            const data = await response.arrayBuffer();
-
-            // Lecture du fichier Excel
-            const workbook = XLSX.read(data);
-
-            // Récupération de la première feuille
-            const feuille = workbook.Sheets[workbook.SheetNames[0]];
-
-            // Conversion de la colonne A en tableau
-            const colonneA = XLSX.utils.sheet_to_json(
-                feuille,
-                { header: 1 }
-            );
-
-            // Récupération de la zone où placer les boutons
-            const conteneur = document.getElementById("liste-boutons");
-
-            // Création des boutons
-            colonneA.forEach((ligne, index) => {
-
-                const valeur = ligne[0];
-
-                // On ignore les cases vides
-                if (valeur !== undefined && valeur !== null && String(valeur).trim() !== "") {
-
-                    const bouton = document.createElement("button");
-
-                    // Texte affiché sur le bouton
-                    bouton.textContent = valeur;
-
-                    // Lien vers la page correspondante
-                    bouton.onclick = function() {
-                        window.location.href = "a" + (index + 1) + ".html";
-                    };
-
-                    conteneur.appendChild(bouton);
+                if (!response.ok) {
+                    throw new Error("Impossible de charger bdd.xls");
                 }
-            });
+
+                const data = await response.arrayBuffer();
+                const workbook = XLSX.read(data);
+                const feuille = workbook.Sheets[workbook.SheetNames[0]];
+
+                const lignes = XLSX.utils.sheet_to_json(
+                    feuille,
+                    { header: 1, defval: "" }
+                );
+
+                const conteneur = document.getElementById("liste-boutons");
+                conteneur.innerHTML = "";
+
+                lignes.forEach((ligne, index) => {
+                    const valeur = ligne[0];
+
+                    if (String(valeur).trim() !== "") {
+                        const bouton = document.createElement("button");
+
+                        bouton.textContent = valeur;
+
+                        bouton.onclick = () => {
+                            window.location.href =
+                                "fiche.html?ligne=" + (index + 1);
+                        };
+
+                        conteneur.appendChild(bouton);
+                    }
+                });
+
+            } catch (erreur) {
+                document.getElementById("liste-boutons").textContent =
+                    "Erreur : " + erreur.message;
+            }
         }
 
-        // Lancement de la fonction
         chargerExcel();
     </script>
+
+</body>
 
 </body>
  

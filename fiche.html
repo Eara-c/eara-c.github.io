@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ma fiche</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+    <a href="index.html">← Retour à la liste</a>
+
+    <h1 id="titre">Chargement...</h1>
+
+    <script>
+        async function chargerFiche() {
+
+            // Récupération du numéro de ligne dans l'URL
+            const parametres = new URLSearchParams(window.location.search);
+            const numeroLigne = Number(parametres.get("ligne"));
+
+            if (!Number.isInteger(numeroLigne) || numeroLigne < 1) {
+                document.getElementById("titre").textContent =
+                    "Fiche introuvable";
+                return;
+            }
+
+            // Lecture du fichier Excel
+            const response = await fetch("bdd.xls");
+            const data = await response.arrayBuffer();
+            const workbook = XLSX.read(data);
+            const feuille = workbook.Sheets[workbook.SheetNames[0]];
+
+            const lignes = XLSX.utils.sheet_to_json(
+                feuille,
+                { header: 1, defval: "" }
+            );
+
+            // Récupération de la ligne correspondante
+            const ligne = lignes[numeroLigne - 1];
+
+            if (!ligne || String(ligne[0]).trim() === "") {
+                document.getElementById("titre").textContent =
+                    "Fiche introuvable";
+                return;
+            }
+
+            // Affichage du contenu de la colonne A
+            document.getElementById("titre").textContent = ligne[0];
+        }
+
+        chargerFiche();
+    </script>
+
+</body>
+</html>
