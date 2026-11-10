@@ -11,3 +11,11 @@ p {
 	width:900px;
 	font-size:80px
 }*/
+
+button {
+    display: block;
+    width: 200px;
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
