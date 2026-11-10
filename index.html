@@ -4,32 +4,69 @@
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="mystyle.css">
-	
-	<p style="text-align:center">
-	<a href="num_to_dep_complet_ou_partiel.html">
-   		<button>Numéro vers départements</button>
-	</a>
-	</p>
-	
-	<p style="margin-top:20px"/>
-	
-	<p style="text-align:center">
-	<a href="liste.html">
-   		<button>Voir la liste</button>
-	</a>
-	</p>
-	
-	<p style="margin-top:20px"/>
-	
-	<p style="text-align:center">
-	<a href="depnumeropref.html">
-   		<button>Départements et préfectures</button>
-	</a>
-	</p>
+	 <title>Mon site</title>
+
+    <!-- Bibliothèque permettant de lire Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 	
 </head>
  
 <body>
+
+
+    <h1>Ma liste</h1>
+
+    <div id="liste-boutons"></div>
+
+    <script>
+        async function chargerExcel() {
+
+            // Récupération du fichier Excel
+            const response = await fetch("bdd.xlsx");
+            const data = await response.arrayBuffer();
+
+            // Lecture du fichier Excel
+            const workbook = XLSX.read(data);
+
+            // Récupération de la première feuille
+            const feuille = workbook.Sheets[workbook.SheetNames[0]];
+
+            // Conversion de la colonne A en tableau
+            const colonneA = XLSX.utils.sheet_to_json(
+                feuille,
+                { header: 1 }
+            );
+
+            // Récupération de la zone où placer les boutons
+            const conteneur = document.getElementById("liste-boutons");
+
+            // Création des boutons
+            colonneA.forEach((ligne, index) => {
+
+                const valeur = ligne[0];
+
+                // On ignore les cases vides
+                if (valeur !== undefined && valeur !== null && String(valeur).trim() !== "") {
+
+                    const bouton = document.createElement("button");
+
+                    // Texte affiché sur le bouton
+                    bouton.textContent = valeur;
+
+                    // Lien vers la page correspondante
+                    bouton.onclick = function() {
+                        window.location.href = "a" + (index + 1) + ".html";
+                    };
+
+                    conteneur.appendChild(bouton);
+                }
+            });
+        }
+
+        // Lancement de la fonction
+        chargerExcel();
+    </script>
+
 </body>
  
 </html>
