@@ -25,10 +25,10 @@
     <script>
         async function chargerExcel() {
             try {
-                const response = await fetch("bdd.xls");
+                const response = await fetch("bdd.xlsx");
 
                 if (!response.ok) {
-                    throw new Error("Impossible de charger bdd.xls");
+                    throw new Error("Impossible de charger bdd.xlsx");
                 }
 
                 const data = await response.arrayBuffer();
