@@ -1,20 +1,23 @@
+
 <!DOCTYPE html>
-<html>
- 
+<html lang="fr">
 <head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="mystyle.css">
-	 <title>Mon site</title>
+    <meta charset="UTF-8">
+    <title>Mon site</title>
 
-    <!-- Bibliothèque permettant de lire Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-	
+
+    <style>
+        button {
+            display: block;
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
 </head>
- 
+
 <body>
-
-
-    <body>
 
     <h1>Ma liste</h1>
     <div id="liste-boutons">Chargement...</div>
@@ -22,7 +25,7 @@
     <script>
         async function chargerExcel() {
             try {
-                const response = await fetch("bdd.xlsx");
+                const response = await fetch("bdd.xls");
 
                 if (!response.ok) {
                     throw new Error("Impossible de charger bdd.xls");
@@ -67,7 +70,4 @@
     </script>
 
 </body>
-
-</body>
- 
 </html>
