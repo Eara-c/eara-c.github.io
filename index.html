@@ -3,70 +3,72 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon site</title>
+    <title>Ma fiche</title>
 
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
-    <style>
-        button {
-            display: block;
-            margin: 10px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-    </style>
 </head>
 
 <body>
 
-    <h1>Ma liste</h1>
-    <div id="liste-boutons">Chargement...</div>
+    <a href="index.html">← Retour à la liste</a>
+
+    <h1 id="titre">Chargement...</h1>
 
     <script>
-        async function chargerExcel() {
+        async function chargerFiche() {
+
+            const titre = document.getElementById("titre");
+
             try {
-                const response = await fetch("bdd.xlsx");
+
+                // Vérifier que la bibliothèque Excel est chargée
+                if (typeof XLSX === "undefined") {
+                    throw new Error("La bibliothèque Excel n'est pas chargée.");
+                }
+
+                // Récupérer le numéro de ligne dans l'URL
+                const parametres = new URLSearchParams(window.location.search);
+                const numeroLigne = Number(parametres.get("ligne"));
+
+                if (!Number.isInteger(numeroLigne) || numeroLigne < 1) {
+                    throw new Error("Numéro de ligne invalide.");
+                }
+
+                // Charger le fichier Excel
+                const response = await fetch("./bdd.xls");
 
                 if (!response.ok) {
-                    throw new Error("Impossible de charger bdd.xlsx");
+                    throw new Error("Impossible de trouver bdd.xls.");
                 }
 
                 const data = await response.arrayBuffer();
-                const workbook = XLSX.read(data);
+
+                // Lire le fichier
+                const workbook = XLSX.read(data, { type: "array" });
+
+                // Récupérer la première feuille
                 const feuille = workbook.Sheets[workbook.SheetNames[0]];
 
-                const lignes = XLSX.utils.sheet_to_json(
-                    feuille,
-                    { header: 1, defval: "" }
-                );
+                // Récupérer directement la cellule A1, A2, etc.
+                const adresse = "A" + numeroLigne;
+                const cellule = feuille[adresse];
 
-                const conteneur = document.getElementById("liste-boutons");
-                conteneur.innerHTML = "";
+                if (!cellule || cellule.v === undefined) {
+                    throw new Error("La cellule " + adresse + " est vide.");
+                }
 
-                lignes.forEach((ligne, index) => {
-                    const valeur = ligne[0];
-
-                    if (String(valeur).trim() !== "") {
-                        const bouton = document.createElement("button");
-
-                        bouton.textContent = valeur;
-
-                        bouton.onclick = () => {
-                            window.location.href =
-                                "fiche.html?ligne=" + (index + 1);
-                        };
-
-                        conteneur.appendChild(bouton);
-                    }
-                });
+                // Afficher son contenu
+                titre.textContent = cellule.v;
 
             } catch (erreur) {
-                document.getElementById("liste-boutons").textContent =
-                    "Erreur : " + erreur.message;
+
+                titre.textContent = "Erreur : " + erreur.message;
+                console.error(erreur);
+
             }
         }
 
-        chargerExcel();
+        chargerFiche();
     </script>
 
 </body>
