@@ -28,7 +28,7 @@
             }
 
             // Lecture du fichier Excel
-            const response = await fetch("bdd.xls");
+            const response = await fetch("bdd.xlsx");
             const data = await response.arrayBuffer();
             const workbook = XLSX.read(data);
             const feuille = workbook.Sheets[workbook.SheetNames[0]];
