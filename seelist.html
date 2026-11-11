@@ -67,10 +67,10 @@
                     "fiche.html?ligne=" + numeroLigne;
 
                 // 3. Chargement du fichier Excel
-                const response = await fetch("./bdd.xls");
+                const response = await fetch("./bdd.xlsx");
 
                 if (!response.ok) {
-                    throw new Error("Impossible de trouver bdd.xls.");
+                    throw new Error("Impossible de trouver bdd.xlsx.");
                 }
 
                 const data = await response.arrayBuffer();
