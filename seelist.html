@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>See list</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eeeeee;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a id="retour" href="#">← Retour à la fiche</a>
+
+    <h1 id="titre">Chargement...</h1>
+
+    <div id="tableau"></div>
+
+    <script>
+
+        async function chargerListe() {
+
+            const titre = document.getElementById("titre");
+            const conteneur = document.getElementById("tableau");
+
+            try {
+
+                // 1. Récupération du numéro de ligne
+                const parametres = new URLSearchParams(window.location.search);
+                const numeroLigne = Number(parametres.get("ligne"));
+
+                if (!Number.isInteger(numeroLigne) || numeroLigne < 1) {
+                    throw new Error("Numéro de ligne invalide.");
+                }
+
+                // 2. Préparation du lien retour
+                document.getElementById("retour").href =
+                    "fiche.html?ligne=" + numeroLigne;
+
+                // 3. Chargement du fichier Excel
+                const response = await fetch("./bdd.xls");
+
+                if (!response.ok) {
+                    throw new Error("Impossible de trouver bdd.xls.");
+                }
+
+                const data = await response.arrayBuffer();
+
+                const workbook = XLSX.read(data, { type: "array" });
+
+                // 4. Récupération de la feuille voclists
+                const feuilleVoclists = workbook.Sheets["voclists"];
+
+                if (!feuilleVoclists) {
+                    throw new Error("La feuille voclists est introuvable.");
+                }
+
+                // 5. Lecture de la cellule Ax
+                const celluleNom = feuilleVoclists["A" + numeroLigne];
+
+                if (!celluleNom || !celluleNom.v) {
+                    throw new Error("Aucun nom de liste trouvé dans voclists.");
+                }
+
+                const nomListe = String(celluleNom.v).trim();
+
+                // 6. Récupération de la feuille portant ce nom
+                const feuilleListe = workbook.Sheets[nomListe];
+
+                if (!feuilleListe) {
+                    throw new Error("La feuille " + nomListe + " est introuvable.");
+                }
+
+                // 7. Mise à jour du titre
+                titre.textContent = nomListe;
+
+                // 8. Récupération des colonnes A et B
+                const lignes = XLSX.utils.sheet_to_json(
+                    feuilleListe,
+                    {
+                        header: 1,
+                        defval: ""
+                    }
+                );
+
+                // 9. Création du tableau HTML
+                const tableau = document.createElement("table");
+
+                lignes.forEach(ligne => {
+
+                    // Ignorer les lignes entièrement vides
+                    if (
+                        String(ligne[0]).trim() === "" &&
+                        String(ligne[1]).trim() === ""
+                    ) {
+                        return;
+                    }
+
+                    const tr = document.createElement("tr");
+
+                    const tdA = document.createElement("td");
+                    tdA.textContent = ligne[0];
+
+                    const tdB = document.createElement("td");
+                    tdB.textContent = ligne[1];
+
+                    tr.appendChild(tdA);
+                    tr.appendChild(tdB);
+
+                    tableau.appendChild(tr);
+
+                });
+
+                conteneur.appendChild(tableau);
+
+            } catch (erreur) {
+
+                titre.textContent = "Erreur";
+                conteneur.textContent = erreur.message;
+
+                console.error(erreur);
+
+            }
+        }
+
+        chargerListe();
+
+    </script>
+
+</body>
+</html>
