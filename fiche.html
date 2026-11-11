@@ -6,6 +6,16 @@
     <title>Ma fiche</title>
 
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <style>
+        button {
+            display: block;
+            margin: 10px;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
 </head>
 
 <body>
@@ -14,44 +24,69 @@
 
     <h1 id="titre">Chargement...</h1>
 
+    <h2>Choisis ton mode :</h2>
+
+    <button onclick="allerVers('seelist.html')">
+        See list
+    </button>
+
+    <button onclick="allerVers('easymode.html')">
+        Easy mode
+    </button>
+
+    <button onclick="allerVers('normalmode.html')">
+        Normal mode
+    </button>
+
     <script>
+
+        // Récupération du numéro de ligne
+        const parametres = new URLSearchParams(window.location.search);
+        const numeroLigne = parametres.get("ligne");
+
+        // Fonction pour conserver le numéro de ligne
+        function allerVers(page) {
+            window.location.href = page + "?ligne=" + numeroLigne;
+        }
+
+        // Chargement de la fiche Excel
         async function chargerFiche() {
 
-            // Récupération du numéro de ligne dans l'URL
-            const parametres = new URLSearchParams(window.location.search);
-            const numeroLigne = Number(parametres.get("ligne"));
+            const titre = document.getElementById("titre");
 
-            if (!Number.isInteger(numeroLigne) || numeroLigne < 1) {
-                document.getElementById("titre").textContent =
-                    "Fiche introuvable";
-                return;
+            try {
+
+                if (typeof XLSX === "undefined") {
+                    throw new Error("Bibliothèque Excel non chargée.");
+                }
+
+                const response = await fetch("./bdd.xls");
+
+                if (!response.ok) {
+                    throw new Error("Impossible de trouver bdd.xls.");
+                }
+
+                const data = await response.arrayBuffer();
+                const workbook = XLSX.read(data, { type: "array" });
+                const feuille = workbook.Sheets[workbook.SheetNames[0]];
+
+                const adresse = "A" + numeroLigne;
+                const cellule = feuille[adresse];
+
+                if (!cellule || cellule.v === undefined) {
+                    throw new Error("Cellule introuvable.");
+                }
+
+                titre.textContent = cellule.v;
+
+            } catch (erreur) {
+                titre.textContent = "Erreur : " + erreur.message;
+                console.error(erreur);
             }
-
-            // Lecture du fichier Excel
-            const response = await fetch("bdd.xlsx");
-            const data = await response.arrayBuffer();
-            const workbook = XLSX.read(data);
-            const feuille = workbook.Sheets[workbook.SheetNames[0]];
-
-            const lignes = XLSX.utils.sheet_to_json(
-                feuille,
-                { header: 1, defval: "" }
-            );
-
-            // Récupération de la ligne correspondante
-            const ligne = lignes[numeroLigne - 1];
-
-            if (!ligne || String(ligne[0]).trim() === "") {
-                document.getElementById("titre").textContent =
-                    "Fiche introuvable";
-                return;
-            }
-
-            // Affichage du contenu de la colonne A
-            document.getElementById("titre").textContent = ligne[0];
         }
 
         chargerFiche();
+
     </script>
 
 </body>
