@@ -19,73 +19,54 @@
 
 <body>
 
-    <a href="index.html">← Retour à la liste</a>
-
-    <h1 id="titre">Chargement...</h1>
-
-    <h2>Choisis ton mode :</h2>
-
-    <button onclick="allerVers('seelist.html')">
-        See list
-    </button>
-
-    <button onclick="allerVers('easymode.html')">
-        Easy mode
-    </button>
-
-    <button onclick="allerVers('normalmode.html')">
-        Normal mode
-    </button>
+    <h1>Ma liste</h1>
+    <div id="liste-boutons">Chargement...</div>
 
     <script>
-
-        // Récupération du numéro de ligne
-        const parametres = new URLSearchParams(window.location.search);
-        const numeroLigne = parametres.get("ligne");
-
-        // Fonction pour conserver le numéro de ligne
-        function allerVers(page) {
-            window.location.href = page + "?ligne=" + numeroLigne;
-        }
-
-        // Chargement de la fiche Excel
-        async function chargerFiche() {
-
-            const titre = document.getElementById("titre");
-
+        async function chargerExcel() {
             try {
-
-                if (typeof XLSX === "undefined") {
-                    throw new Error("Bibliothèque Excel non chargée.");
-                }
-
-                const response = await fetch("./bdd.xls");
+                const response = await fetch("bdd.xlsx");
 
                 if (!response.ok) {
-                    throw new Error("Impossible de trouver bdd.xls.");
+                    throw new Error("Impossible de charger bdd.xlsx");
                 }
 
                 const data = await response.arrayBuffer();
-                const workbook = XLSX.read(data, { type: "array" });
+                const workbook = XLSX.read(data);
                 const feuille = workbook.Sheets[workbook.SheetNames[0]];
 
-                const adresse = "A" + numeroLigne;
-                const cellule = feuille[adresse];
+                const lignes = XLSX.utils.sheet_to_json(
+                    feuille,
+                    { header: 1, defval: "" }
+                );
 
-                if (!cellule || cellule.v === undefined) {
-                    throw new Error("Cellule introuvable.");
-                }
+                const conteneur = document.getElementById("liste-boutons");
+                conteneur.innerHTML = "";
 
-                titre.textContent = cellule.v;
+                lignes.forEach((ligne, index) => {
+                    const valeur = ligne[0];
+
+                    if (String(valeur).trim() !== "") {
+                        const bouton = document.createElement("button");
+
+                        bouton.textContent = valeur;
+
+                        bouton.onclick = () => {
+                            window.location.href =
+                                "fiche.html?ligne=" + (index + 1);
+                        };
+
+                        conteneur.appendChild(bouton);
+                    }
+                });
 
             } catch (erreur) {
-                titre.textContent = "Erreur : " + erreur.message;
-                console.error(erreur);
+                document.getElementById("liste-boutons").textContent =
+                    "Erreur : " + erreur.message;
             }
         }
 
-        chargerFiche();
-
+        chargerExcel();
     </script>
 
 </body>
