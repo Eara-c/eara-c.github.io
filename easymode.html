@@ -44,16 +44,24 @@
         }
 
         .correct {
-            background-color: #4CAF50 !important;
-            color: white;
-            border-color: #4CAF50;
-        }
+			background-color: #4CAF50 !important;
+			color: white;
+			border: 3px solid #237A2B !important;
+			font-weight: bold;
+		}
 
-        .incorrect {
-            background-color: #e74c3c !important;
-            color: white;
-            border-color: #e74c3c;
-        }
+		.incorrect {
+			background-color: #e74c3c !important;
+			color: white;
+			border: 3px solid #A92318 !important;
+			font-weight: bold;
+		}
+
+		.reponse.choisie {
+			border: 5px solid #222 !important;
+			font-weight: bold;
+			transform: scale(1.03);
+		}
 
         #next {
             margin-top: 30px;
@@ -251,24 +259,27 @@
             boutons.forEach(bouton => {
 
                 // Désactiver tous les boutons
-                bouton.disabled = true;
+                  bouton.disabled = true;
 
-                // Colorer la bonne réponse en vert
-                if (bouton.textContent === bonneReponse) {
-                    bouton.classList.add("correct");
-                }
+				// Mettre la bonne réponse en vert
+				if (bouton.textContent === bonneReponse) {
+					bouton.classList.add("correct");
+				}
 
-                // Colorer les mauvaises réponses en rouge
-                else {
-                    bouton.classList.add("incorrect");
-                }
+				// Mettre les mauvaises réponses en rouge
+				else {
+					bouton.classList.add("incorrect");
+				}
 
-            });
+			});
 
-            // Afficher le bouton Next
-            document.getElementById("next").style.display = "inline-block";
+			// Mettre en évidence la réponse choisie
+			boutonClique.classList.add("choisie");
 
-        }
+			// Afficher le bouton Next
+			document.getElementById("next").style.display = "inline-block";
+
+		}
 
 
         // Lancement du quiz
