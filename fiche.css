@@ -3,7 +3,7 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* Liens vers les différentes activités */
+/* Les trois choix de la fiche */
 a:not(#retour) {
     display: block;
     width: 250px;
