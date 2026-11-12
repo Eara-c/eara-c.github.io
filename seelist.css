@@ -1,0 +1,51 @@
+
+/* ============================= */
+/*           TABLEAU             */
+/* ============================= */
+
+table {
+    width: max-content;
+    max-width: 100%;
+    margin: 25px auto;
+
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+/* Cellules */
+
+th,
+td {
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* En-têtes */
+
+th {
+    font-weight: bold;
+    background-color: #e9e9ed;
+}
+
+/* Lignes */
+
+tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+/* ============================= */
+/*       PETITS ÉCRANS           */
+/* ============================= */
+
+@media (max-width: 600px) {
+    table {
+        margin: 20px auto;
+    }
+
+    th,
+    td {
+        padding: 8px 10px;
+    }
+}

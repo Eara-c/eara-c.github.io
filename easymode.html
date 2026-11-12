@@ -8,69 +8,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 40px;
-        }
+    <link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/easymode.css">
 
-        #question {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 40px 0;
-        }
-
-        #options {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .reponse {
-            width: 250px;
-            padding: 15px;
-            font-size: 18px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: white;
-        }
-
-        .reponse:disabled {
-            cursor: default;
-            opacity: 1;
-        }
-
-        .correct {
-			background-color: #4CAF50 !important;
-			color: white;
-			border: 3px solid #237A2B !important;
-			font-weight: bold;
-		}
-
-		.incorrect {
-			background-color: #e74c3c !important;
-			color: white;
-			border: 3px solid #A92318 !important;
-			font-weight: bold;
-		}
-
-		.reponse.choisie {
-			border: 5px solid #222 !important;
-			font-weight: bold;
-			transform: scale(1.03);
-		}
-
-        #next {
-            margin-top: 30px;
-            padding: 12px 35px;
-            font-size: 18px;
-            cursor: pointer;
-            display: none;
-        }
-    </style>
 </head>
 
 <body>

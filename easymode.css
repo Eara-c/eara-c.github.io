@@ -1,0 +1,61 @@
+
+/* ============================= */
+/*           QUESTION            */
+/* ============================= */
+
+#question {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 40px 0;
+}
+
+/* ============================= */
+/*            OPTIONS            */
+/* ============================= */
+
+#options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ============================= */
+/*       BOUTONS RÉPONSES        */
+/* ============================= */
+
+.reponse {
+    width: 250px;
+    padding: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.reponse:disabled {
+    cursor: default;
+    opacity: 1;
+}
+
+/* ============================= */
+/*       RÉPONSE CHOISIE         */
+/* ============================= */
+
+.reponse.choisie {
+    border: 5px solid #222 !important;
+    font-weight: bold;
+    transform: scale(1.03);
+}
+
+/* ============================= */
+/*        BOUTON SUIVANT         */
+/* ============================= */
+
+#next {
+    margin-top: 30px;
+    padding: 12px 35px;
+    font-size: 18px;
+    display: none;
+}
