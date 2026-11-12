@@ -1,40 +1,20 @@
-
-#question {
-    font-size: 28px;
+#reponse.correct {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    border: 3px solid #237A2B !important;
     font-weight: bold;
-    margin: 40px 0 15px;
-    text-align: center;
 }
 
-#contexte {
-    font-size: 18px;
-    font-style: italic;
-    margin-bottom: 24px;
-    text-align: center;
-}
-
-#reponse {
-    display: block;
-    width: 280px;
-    max-width: 100%;
-    margin: 0 auto 15px;
-    padding: 12px;
-    font-size: 18px;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+#reponse.incorrect {
+    background-color: #e74c3c !important;
+    color: white !important;
+    border: 3px solid #A92318 !important;
+    font-weight: bold;
 }
 
 #bonne-reponse {
-    margin-top: 20px;
-    font-size: 20px;
+    color: #237A2B;
     font-weight: bold;
-    text-align: center;
-}
-
-#next {
-    margin-top: 30px;
-    padding: 12px 35px;
-    font-size: 18px;
-    display: none;
+    font-size: 20px;
+    margin-top: 20px;
 }
