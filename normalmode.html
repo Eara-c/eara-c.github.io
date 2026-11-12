@@ -21,13 +21,14 @@
 
         #question {
             font-size: 24px;
-            margin: 25px 0;
+            margin: 25px 0 0;
         }
 
         #contexte {
             font-size: 16px;
             color: #666;
             margin-top: 8px;
+            margin-bottom: 24px;
         }
 
         #reponse {
@@ -132,8 +133,10 @@
                 }
 
                 const nomListe = XLSX.utils
-                    .sheet_to_json(feuilleVoclists, { header: 1, defval: "" })
-                    [numeroLigne - 1]?.[0];
+                    .sheet_to_json(feuilleVoclists, {
+                        header: 1,
+                        defval: ""
+                    })[numeroLigne - 1]?.[0];
 
                 if (!nomListe) {
                     throw new Error("Le nom de la liste est introuvable.");
@@ -141,7 +144,8 @@
 
                 // Trouver la feuille correspondant à la liste
                 const nomFeuille = workbook.SheetNames.find(
-                    nom => nom.trim().toLowerCase() === String(nomListe).trim().toLowerCase()
+                    nom => nom.trim().toLowerCase() ===
+                    String(nomListe).trim().toLowerCase()
                 );
 
                 if (!nomFeuille) {
@@ -152,7 +156,10 @@
 
                 // Récupérer les colonnes A, B et C
                 donnees = XLSX.utils
-                    .sheet_to_json(feuilleListe, { header: 1, defval: "" })
+                    .sheet_to_json(feuilleListe, {
+                        header: 1,
+                        defval: ""
+                    })
                     .map(ligne => ({
                         A: String(ligne[0] ?? "").trim(),
                         B: String(ligne[1] ?? "").trim(),
@@ -201,10 +208,12 @@
             champ.disabled = false;
             champ.className = "";
 
-            // Réinitialiser les éléments de validation
-            document.getElementById("bonne-reponse").textContent = "";
-            document.getElementById("bonne-reponse").style.display = "none";
+            // Réinitialiser la bonne réponse
+            const bonneReponseDiv = document.getElementById("bonne-reponse");
+            bonneReponseDiv.textContent = "";
+            bonneReponseDiv.style.display = "none";
 
+            // Réafficher le bouton de validation
             document.getElementById("check").style.display = "inline-block";
             document.getElementById("next").style.display = "none";
 
