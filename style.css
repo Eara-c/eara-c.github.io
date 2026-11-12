@@ -1,3 +1,70 @@
+
+* {
+    box-sizing: border-box;
+}
+
 body {
+    font-family: Arial, sans-serif;
     text-align: center;
+    margin: 0;
+    padding: 30px;
+}
+
+/* Titres */
+h1, h2, h3 {
+    text-align: center;
+}
+
+/* Boutons communs */
+button {
+    display: inline-block;
+    padding: 12px 20px;
+    margin: 10px 5px;
+    font-family: inherit;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #e9e9ed;
+    color: #222;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #d8d8df;
+}
+
+button:disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
+/* Réponses correctes et incorrectes */
+.correct {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    border: 3px solid #237A2B !important;
+    font-weight: bold;
+}
+
+.incorrect {
+    background-color: #e74c3c !important;
+    color: white !important;
+    border: 3px solid #A92318 !important;
+    font-weight: bold;
+}
+
+/* Lien de retour */
+#retour {
+    display: block;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* Adaptation aux petits écrans */
+@media (max-width: 600px) {
+    body {
+        padding: 15px;
+    }
 }
