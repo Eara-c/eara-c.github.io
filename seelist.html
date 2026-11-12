@@ -116,12 +116,16 @@
 
                 // 8. Récupération des colonnes A et B
                 const lignes = XLSX.utils.sheet_to_json(
-                    feuilleListe,
-                    {
-                        header: 1,
-                        defval: ""
-                    }
-                );
+					feuilleListe,
+					{
+						header: 1,
+						defval: ""
+					}
+				);
+
+				// Nombre de colonnes à afficher
+				const nombreColonnes =
+					nomFeuille.trim().toLowerCase() === "polite expressions" ? 3 : 2;
 
                 // 9. Création du tableau HTML
                 const tableau = document.createElement("table");
@@ -129,27 +133,25 @@
                 lignes.forEach(ligne => {
 
                     // Ignorer les lignes entièrement vides
-                    if (
-                        String(ligne[0]).trim() === "" &&
-                        String(ligne[1]).trim() === ""
-                    ) {
-                        return;
-                    }
+					if (ligne.slice(0, nombreColonnes).every(
+						valeur => String(valeur).trim() === ""
+					)) {
+						return;
+					}
 
-                    const tr = document.createElement("tr");
+					const tr = document.createElement("tr");
 
-                    const tdA = document.createElement("td");
-                    tdA.textContent = ligne[0];
+					for (let i = 0; i < nombreColonnes; i++) {
 
-                    const tdB = document.createElement("td");
-                    tdB.textContent = ligne[1];
+						const td = document.createElement("td");
+						td.textContent = ligne[i] ?? "";
 
-                    tr.appendChild(tdA);
-                    tr.appendChild(tdB);
+						tr.appendChild(td);
+					}
 
-                    tableau.appendChild(tr);
+					tableau.appendChild(tr);
 
-                });
+				});
 
                 conteneur.appendChild(tableau);
 
