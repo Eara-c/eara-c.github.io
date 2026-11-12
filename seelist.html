@@ -93,8 +93,19 @@
 
                 const nomListe = String(celluleNom.v).trim();
 
-                // 6. Récupération de la feuille portant ce nom
-                const feuilleListe = workbook.Sheets[nomListe];
+				// Recherche du nom réel de la feuille
+				const nomFeuille = workbook.SheetNames.find(
+					nom => nom.trim().toLowerCase() === nomListe.toLowerCase()
+				);
+
+				if (!nomFeuille) {
+					throw new Error(
+						"La feuille '" + nomListe + "' est introuvable. " +
+						"Feuilles disponibles : " + workbook.SheetNames.join(", ")
+					);
+				}
+
+				const feuilleListe = workbook.Sheets[nomFeuille];
 
                 if (!feuilleListe) {
                     throw new Error("La feuille " + nomListe + " est introuvable.");
