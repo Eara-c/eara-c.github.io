@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normal Mode</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #question {
+            font-size: 24px;
+            margin: 25px 0;
+        }
+
+        #contexte {
+            font-size: 16px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        #reponse {
+            width: 280px;
+            box-sizing: border-box;
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .correct {
+            background-color: #4CAF50 !important;
+            color: white !important;
+            border: 3px solid #237A2B !important;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            background-color: #e74c3c !important;
+            color: white !important;
+            border: 3px solid #A92318 !important;
+            font-weight: bold;
+        }
+
+        #bonne-reponse {
+            display: none;
+            width: 280px;
+            box-sizing: border-box;
+            margin: 12px auto;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            border: 3px solid #237A2B;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+        }
+
+        #next {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 id="titre-liste">Normal Mode</h1>
+
+    <div id="question"></div>
+    <div id="contexte"></div>
+
+    <input
+        type="text"
+        id="reponse"
+        placeholder="Write your answer..."
+        autocomplete="off"
+    >
+
+    <br>
+
+    <button id="check" onclick="verifierReponse()">Check answer</button>
+
+    <div id="bonne-reponse"></div>
+
+    <button id="next" onclick="nouvelleQuestion()">Next</button>
+
+    <script>
+        const parametres = new URLSearchParams(window.location.search);
+        const numeroLigne = Number(parametres.get("ligne"));
+
+        let donnees = [];
+        let bonneReponse = "";
+
+        async function chargerDonnees() {
+            try {
+                const reponse = await fetch("./bdd.xlsx");
+
+                if (!reponse.ok) {
+                    throw new Error("Impossible de charger bdd.xlsx");
+                }
+
+                const tableau = await reponse.arrayBuffer();
+                const workbook = XLSX.read(tableau, { type: "array" });
+
+                // Récupérer le nom de la liste dans voclists, colonne A
+                const feuilleVoclists = workbook.Sheets["voclists"];
+
+                if (!feuilleVoclists) {
+                    throw new Error("La feuille voclists est introuvable.");
+                }
+
+                const nomListe = XLSX.utils
+                    .sheet_to_json(feuilleVoclists, { header: 1, defval: "" })
+                    [numeroLigne - 1]?.[0];
+
+                if (!nomListe) {
+                    throw new Error("Le nom de la liste est introuvable.");
+                }
+
+                // Trouver la feuille correspondant à la liste
+                const nomFeuille = workbook.SheetNames.find(
+                    nom => nom.trim().toLowerCase() === String(nomListe).trim().toLowerCase()
+                );
+
+                if (!nomFeuille) {
+                    throw new Error("La feuille de vocabulaire est introuvable.");
+                }
+
+                const feuilleListe = workbook.Sheets[nomFeuille];
+
+                // Récupérer les colonnes A, B et C
+                donnees = XLSX.utils
+                    .sheet_to_json(feuilleListe, { header: 1, defval: "" })
+                    .map(ligne => ({
+                        A: String(ligne[0] ?? "").trim(),
+                        B: String(ligne[1] ?? "").trim(),
+                        C: String(ligne[2] ?? "").trim()
+                    }))
+                    .filter(ligne => ligne.A !== "" && ligne.B !== "");
+
+                if (donnees.length === 0) {
+                    throw new Error("Cette liste ne contient aucun mot utilisable.");
+                }
+
+                // Afficher le titre de la liste
+                document.getElementById("titre-liste").textContent = nomListe;
+
+                nouvelleQuestion();
+
+            } catch (erreur) {
+                document.getElementById("question").textContent =
+                    "Erreur : " + erreur.message;
+            }
+        }
+
+        function nouvelleQuestion() {
+            if (donnees.length === 0) return;
+
+            // Choisir une ligne aléatoire
+            const index = Math.floor(Math.random() * donnees.length);
+            const ligne = donnees[index];
+
+            // Choisir aléatoirement le sens de la traduction
+            const sens = Math.random() < 0.5;
+
+            let question = sens ? ligne.A : ligne.B;
+            bonneReponse = sens ? ligne.B : ligne.A;
+
+            // Afficher la question
+            document.getElementById("question").textContent = question;
+
+            // Afficher le contexte s'il existe
+            document.getElementById("contexte").textContent =
+                ligne.C ? "(" + ligne.C + ")" : "";
+
+            // Réinitialiser le champ de réponse
+            const champ = document.getElementById("reponse");
+            champ.value = "";
+            champ.disabled = false;
+            champ.className = "";
+
+            // Réinitialiser les éléments de validation
+            document.getElementById("bonne-reponse").textContent = "";
+            document.getElementById("bonne-reponse").style.display = "none";
+
+            document.getElementById("check").style.display = "inline-block";
+            document.getElementById("next").style.display = "none";
+
+            champ.focus();
+        }
+
+        function verifierReponse() {
+            const champ = document.getElementById("reponse");
+            const reponseUtilisateur = champ.value.trim();
+
+            if (reponseUtilisateur === "") {
+                champ.focus();
+                return;
+            }
+
+            const estCorrecte =
+                reponseUtilisateur.toLowerCase() === bonneReponse.toLowerCase();
+
+            // Colorer la réponse saisie
+            champ.classList.add(estCorrecte ? "correct" : "incorrect");
+
+            // Afficher la bonne réponse en dessous
+            const bonneReponseDiv = document.getElementById("bonne-reponse");
+            bonneReponseDiv.textContent = bonneReponse;
+            bonneReponseDiv.style.display = "block";
+
+            // Bloquer la saisie et afficher le bouton suivant
+            champ.disabled = true;
+            document.getElementById("check").style.display = "none";
+            document.getElementById("next").style.display = "inline-block";
+        }
+
+        // Permettre de valider avec la touche Entrée
+        document.getElementById("reponse").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                verifierReponse();
+            }
+        });
+
+        chargerDonnees();
+    </script>
+
+</body>
+</html>
