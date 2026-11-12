@@ -21,3 +21,17 @@ a:not(#retour) {
 a:not(#retour):hover {
     background-color: #d8d8df;
 }
+
+#boutons-modes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+#boutons-modes button {
+    width: 250px;
+    max-width: 100%;
+    margin: 0;
+    font-size: 18px;
+}

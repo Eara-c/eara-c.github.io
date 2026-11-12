@@ -3,34 +3,38 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ma fiche</title>
 
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <link rel="stylesheet" href="style.css">
-	<link rel="stylesheet" href="fiche.css">
-	
+    <link rel="stylesheet" href="fiche.css">
 </head>
 
 <body>
 
-    <a href="index.html">← Retour à la liste</a>
+    <a id="retour" href="index.html">← Retour à la liste</a>
 
     <h1 id="titre">Chargement...</h1>
 
     <h2>Choisis ton mode :</h2>
 
-    <button onclick="allerVers('seelist.html')">
-        See list
-    </button>
+    <div id="boutons-modes">
 
-    <button onclick="allerVers('easymode.html')">
-        Easy mode
-    </button>
+        <button onclick="allerVers('seelist.html')">
+            See list
+        </button>
 
-    <button onclick="allerVers('normalmode.html')">
-        Normal mode
-    </button>
+        <button onclick="allerVers('easymode.html')">
+            Easy mode
+        </button>
+
+        <button onclick="allerVers('normalmode.html')">
+            Normal mode
+        </button>
+
+    </div>
 
     <script>
 
