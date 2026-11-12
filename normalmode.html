@@ -19,6 +19,12 @@
             margin-bottom: 20px;
         }
 
+        #retour {
+            display: block;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
         #question {
             font-size: 24px;
             margin: 25px 0 0;
@@ -87,6 +93,8 @@
 
 <body>
 
+    <a id="retour" href="#">← Retour à la fiche</a>
+
     <h1 id="titre-liste">Normal Mode</h1>
 
     <div id="question"></div>
@@ -110,6 +118,10 @@
     <script>
         const parametres = new URLSearchParams(window.location.search);
         const numeroLigne = Number(parametres.get("ligne"));
+
+        // Définir le lien de retour vers la fiche
+        document.getElementById("retour").href =
+            "fiche.html?ligne=" + numeroLigne;
 
         let donnees = [];
         let bonneReponse = "";
